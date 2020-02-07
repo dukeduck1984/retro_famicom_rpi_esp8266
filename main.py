@@ -5,16 +5,6 @@ When switching on, the GPIO goes low, which triggers 'on_press' function - activ
 When switching off, the GPIO goes back to high, which triggers 'on_release' function - it sends a pull low signal to
 RPI GPIO to execute linux shut down command while monitoring the TxD pin of the RPI, as soon as the TxD goes low,
 which means the RPI is shut down safely, the LED will be off.
-
-
-WIRING:
-WeMos D1mini    RPI     FC                          SSR                 LED
-GPIO5(D1)               Power Switch Positive
-GND             GND     Power Switch Negative       Input Negative      Negative
-GPIO4(D2)                                           Input Positive
-GPIO16(D0)      GPIO3
-GPIO14(D5)      GPIO14
-GPIO12(D6)                                                              Positive (with a resistor)
 """
 
 
