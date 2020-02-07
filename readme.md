@@ -53,32 +53,32 @@ be bothered by the Recalbox menus, all the necessary operations are just like th
 * Overview
 
 | WeMos D1mini | RPI2 | Famicom | DC-DC SSR | LED | 5V DC Power Supply |
-| :----------------: |:------:| :-----------------------: | :--------: | :--------------------:| :-----: |
-| GPIO5 (D1)         |        |     Power SW +            |            |                       |         |
-| GND                |   GND  | Power SW - & Reset BTN -  |  Input -   |   Cathode             |   GND   |
-| GPIO4 (D2)         |        |                           |  Input +   |                       |         |
-| GPIO14 (D5)        |  GPIO3 |                           |            |                       |         |
-| GPIO15 (D8)        |  GPIO4 |                           |            |                       |         |
-| GPIO12 (D6)        |        |                           |            | Anode (/w a resistor) |         |
-|                    |  GPIO2 |      Reset BTN +          |            |                       |         |
-|  5V Pin            |        |                           |  Load +    |                       |   5V+   |   
-|                    | 5V Pin |                           |  Load -    |                       |         |
+| :----------------: |:------:| :-----------------------: |:---------:| :--------------------:|:-----:|
+| GPIO5 (D1)         |        |     Power SW +            |           |                       |       |
+| GND                |   GND  | Power SW - & Reset BTN -  | Input -   | Cathode               | GND   |
+| GPIO4 (D2)         |        |                           | Input +   |                       |       |
+| GPIO14 (D5)        |  GPIO3 |                           |           |                       |       |
+| GPIO15 (D8)        |  GPIO4 |                           |           |                       |       |
+| GPIO12 (D6)        |        |                           |           | Anode (/w a resistor) |       |
+|                    |  GPIO2 |      Reset BTN +          |           |                       |       |
+|  5V Pin            |        |                           | Load +    |                       | 5V+   |   
+|                    | 5V Pin |                           | Load -    |                       |       |
 
 * Fritzing Diagram
 
 ![](./pic/wiring.png)
 
 ## rpi-pin356-power.py
-* By looking at the [code](#refs) in ```rpi-pin356-power.py``` which you can find under folder ```/recalbox/scripts/``` 
-4 pins on GPIO are definded as following:
+* By looking at the [code](#refs) in ```rpi-pin356-power.py``` which you can find under folder ```/recalbox/scripts/```,
+4 pins on GPIO are defined as following:
     1. Power Plus, GPIO 3 (pin#5), as the positive of the power switch;
     2. Reset Plus, GPIO 2 (pin#3), as the positive of the reset push button;
     3. Led, GPIO 14 (pin#8), as the power status indicator which is intended to wire to an Led.
     4. The above 3 pins are mentioned in [Add a start stop button to your recalbox](https://github.com/recalbox/recalbox-os/wiki/Add-a-start-stop-button-to-your-recalbox-%28EN%29).
      However, there is the 4th pin which is not mentioned at all.
-        *  Power En, GPIO 4 (pin#7), this pin stays **LOW** until Recalbox has booted into main menu, and stays **HIGH** until the 
-        Linux system is ***almost*** shut down properly.  So GPIO 4 is a better signal than GPIO 14 to indicate the power
-        status of the RPI.
+        *  Power En, GPIO 4 (pin#7), this pin stays **LOW** until Recalbox has booted into main menu, and stays **HIGH**
+        until the Linux system is ***almost*** shut down properly.  So GPIO 4 is a better signal than GPIO 14 to indicate 
+        the power status of the RPI.
 
 * So, regarding the wiring of the Led, you have 2 options:
     1. Let the ESP8266 handle the Led as how I implement in my code.  The Led will be light on as soon as you turn on the
