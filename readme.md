@@ -57,8 +57,8 @@ be bothered by the Recalbox menus, all the necessary operations are just like th
 | GPIO5 (D1)         |        |     Power SW +            |            |                       |         |
 | GND                |   GND  | Power SW - & Reset BTN -  |  Input -   |   Cathode             |   GND   |
 | GPIO4 (D2)         |        |                           |  Input +   |                       |         |
-| GPIO16 (D0)        |  GPIO3 |                           |            |                       |         |
-| GPIO14 (D5)        |  GPIO4 |                           |            |                       |         |
+| GPIO14 (D5)        |  GPIO3 |                           |            |                       |         |
+| GPIO15 (D8)        |  GPIO4 |                           |            |                       |         |
 | GPIO12 (D6)        |        |                           |            | Anode (/w a resistor) |         |
 |                    |  GPIO2 |      Reset BTN +          |            |                       |         |
 |  5V Pin            |        |                           |  Load +    |                       |   5V+   |   
