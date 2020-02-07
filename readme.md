@@ -64,15 +64,14 @@ properly shut down, which helps determine the power status of the RPI.
 | WeMos D1mini | RPI2 | Famicom | DC-DC SSR | LED | 5V DC Power Supply |
 | :----------------: |:------:| :-----------------------: | :--------: | :--------------------:| :-----: |
 | GPIO5 (D1)         |        |     Power SW +            |            |                       |         |
-| GND                |   GND  | Power SW - & Reset BTN -  |  Input -   |   Cathode             |         |
+| GND                |   GND  | Power SW - & Reset BTN -  |  Input -   |   Cathode             |   GND   |
 | GPIO4 (D2)         |        |                           |  Input +   |                       |         |
 | GPIO16 (D0)        |  GPIO3 |                           |            |                       |         |
 | GPIO14 (D5)        | GPIO14 |                           |            |                       |         |
 | GPIO12 (D6)        |        |                           |            | Anode (/w a resistor) |         |
 |                    |  GPIO2 |      Reset BTN +          |            |                       |         |
-|  USB V+            |        |                           |  Load +    |                       |   5V+   |     
-|  USB V-            | USB V- |                           |            |                       |   GND   |
-|                    | USB V+ |                           |  Load -    |                       |         |
+|  5V Pin            |        |                           |  Load +    |                       |   5V+   |   
+|                    | 5V Pin |                           |  Load -    |                       |         |
 
 * Fritzing Diagram
 
