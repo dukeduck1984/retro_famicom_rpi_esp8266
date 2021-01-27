@@ -16,7 +16,8 @@ be bothered by the Recalbox menus, all the necessary operations are just like th
 ## Bill of Materials
 * 1 x WeMos D1mini or other ESP8266 dev board
 * 1 x RPI2 with [Recalbox](https://www.recalbox.com/) installed
-* 1 x DC-DC Solid State Relay (make sure it can be triggered by 3V)
+* ~~1 x DC-DC Solid State Relay (make sure it can be triggered by 3V)~~
+* 1 x N-Mosfet + 10K resistor
 * 1 x 3mm Led
 * 1 x 76Ω resistor
 * 1 x Famicom console case with its original power switch and reset push button
@@ -46,25 +47,31 @@ be bothered by the Recalbox menus, all the necessary operations are just like th
 #### Preparing your ESP8266
 * Download the firmware, pls see [here](http://micropython.org/download#esp8266)
 * Flash the firmware, pls see [here](http://docs.micropython.org/en/latest/esp8266/esp8266/tutorial/intro.html#deploying-the-firmware)
-* Upload ```button.py``` & ```main.py``` in this repo to your ESP8266.  Here is a [tutorial](https://techtutorialsx.com/2017/06/04/esp32-esp8266-micropython-uploading-files-to-the-file-system/)
+* Upload ```config.py```, ```button.py``` & ```main.py``` in this repo to your ESP8266.  Here is a [tutorial](https://techtutorialsx.com/2017/06/04/esp32-esp8266-micropython-uploading-files-to-the-file-system/)
 
 
 ## Wiring
+
+![](./pic/rpi2_pinouts.jpg)
+
 * Overview
 
-| WeMos D1mini | RPI2 | Famicom | DC-DC SSR | LED | 5V DC Power Supply |
-| :----------------: |:------:| :-----------------------: |:---------:| :--------------------:|:-----:|
-| GPIO5 (D1)         |        |     Power SW +            |           |                       |       |
-| GND                |   GND  | Power SW - & Reset BTN -  | Input -   | Cathode               | GND   |
-| GPIO4 (D2)         |        |                           | Input +   |                       |       |
-| GPIO14 (D5)        |  GPIO3 |                           |           |                       |       |
-| GPIO15 (D8)        |  GPIO4 |                           |           |                       |       |
-| GPIO12 (D6)        |        |                           |           | Anode (/w a resistor) |       |
-|                    |  GPIO2 |      Reset BTN +          |           |                       |       |
-|  5V Pin            |        |                           | Load +    |                       | 5V+   |   
-|                    | 5V Pin |                           | Load -    |                       |       |
+|    WeMos D1mini    |   RPI2  |           Famicom         | N-Mosfet  |         LED           | 5V DC Power Supply |
+| :----------------: |:-------:| :-----------------------: |:---------:| :--------------------:|:-----:|
+| GPIO5 (D1)         |         |     Power SW +            |           |                       |       |
+| GND                |         | Power SW - & Reset BTN -  |   Source  | Cathode               | GND   |
+| GPIO4 (D2)         |         |                           |   Gate    |                       |       |
+| GPIO14 (D5)        |  GPIO3  |                           |           |                       |       |
+| GPIO15 (D8)        |  GPIO14 |                           |           |                       |       |
+| GPIO12 (D6)        |         |                           |           | Anode (/w a resistor) |       |
+|                    |  GPIO2  |      Reset BTN +          |           |                       |       |
+|  5V Pin            |  5V Pin |                           |           |                       | 5V+   |
+|                    |   GND   |                           |   Drain   |                       |       |
 
 * Fritzing Diagram
+
+**Pls note the SSR in the below diagram should be replaced by a N-Mosfet, and wireing per above table.  SSR causes voltage drop which
+will result in under-voltage error of the RPi.**
 
 ![](./pic/wiring.png)
 
@@ -75,10 +82,12 @@ be bothered by the Recalbox menus, all the necessary operations are just like th
     2. Reset Plus, GPIO 2 (pin#3), as the positive of the reset push button;
     3. Led, GPIO 14 (pin#8), as the power status indicator which is intended to wire to an Led.
     4. The above 3 pins are mentioned in [Add a start stop button to your recalbox](https://github.com/recalbox/recalbox-os/wiki/Add-a-start-stop-button-to-your-recalbox-%28EN%29).
-     However, there is the 4th pin which is not mentioned at all.
-        *  Power En, GPIO 4 (pin#7), this pin stays **LOW** until Recalbox has booted into main menu, and stays **HIGH**
+     ~~However, there is the 4th pin which is not mentioned at all.~~
+        ~~*  Power En, GPIO 4 (pin#7), this pin stays **LOW** until Recalbox has booted into main menu, and stays **HIGH**
         until the Linux system is ***almost*** shut down properly.  So GPIO 4 is a better signal than GPIO 14 to indicate 
-        the power status of the RPI.
+        the power status of the RPI.~~
+       * WIth a N-Mosfet, GPIO 4 cannot be connected to ESP8266, otherwise the RPi2 won't boot.
+    Still need to use GPIO 14 to detect the shutdown.
 
 * So, regarding the wiring of the Led, you have 2 options:
     1. Let the ESP8266 handle the Led as how I implement in my code.  The Led will be light on as soon as you turn on the
